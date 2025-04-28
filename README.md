@@ -5,7 +5,7 @@ A weather visualization web project using **Leaflet.js** (for maps) and **Chart.
 ## Features
 
 - Interactive map for selecting any location;
-- Choose forecast periods: 1, 3, 7, or 16 days;
+- Choose forecast periods: 1, 3, 7, 14 or 16 days;
 - Quick city selection;
 - Auto-generated charts for:
   - Precipitation
