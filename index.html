@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-br"> <!-- Set page language to Brazilian Portuguese -->
+<head>
+    <meta charset="UTF-8"> <!-- Set character encoding to UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Make the page responsive -->
+    <title>Interactive Meteogram</title> <!-- Page title -->
+
+    <!-- Import Leaflet CSS (mapping library) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Import Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Import Chart.js (charting library) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Page CSS styles -->
+    <style>
+        /* General page styling */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        /* Map container style */
+        #map {
+            height: 400px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+            width: 100%;
+        }
+
+        /* Control panel styling */
+        .controls {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* Dropdown styling */
+        #days-select, #city-select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #3498db;
+            background-color: white;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        /* Chart container styling */
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 300px;
+            position: relative;
+        }
+
+        /* Page title styling */
+        h1 {
+            text-align: center;
+            color: #333;
+            grid-column: 1 / -1;
+        }
+
+        /* Chart title styling */
+        .variable-title {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        /* Canvas styling for charts */
+        canvas {
+            width: 100% !important;
+            height: 85% !important;
+        }
+
+        /* Coordinates display styling */
+        .coordinates {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Overlay text on map styling */
+        .leaflet-text-overlay {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main title -->
+    <h1><p>Klimato</p> Interactive Meteogram</h1>
+
+    <!-- Controls for selecting forecast days and city -->
+    <div class="controls">
+        <label for="days-select">Forecast Period:</label>
+        <select id="days-select">
+            <option value="1">1 Day</option>
+            <option value="3">3 Days</option>
+            <option value="7">7 Days</option>
+            <option value="16">16 Days</option>
+        </select>
+
+        <label for="city-select">Select City:</label>
+        <select id="city-select">
+            <option value="-22.6083,-43.7084">Paracambi, RJ</option>
+            <option value="-23.5505,-46.6333">São Paulo</option>
+            <option value="-30.0346,-51.2177">Porto Alegre</option>
+            <option value="-15.7801,-47.9292">Brasília</option>
+            <option value="-19.9191,-43.9386">Belo Horizonte</option>
+        </select>
+
+        <!-- Display selected coordinates -->
+        <div class="coordinates" id="coordinates">
+            Select a location on the map to view data.<br>
+            Coordinates: -22.6083, -43.7084
+        </div>
+    </div>
+
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Charts container -->
+    <div id="charts"></div>
+
+    <!-- Main JavaScript logic -->
+    <script>
+        // Global variables for current location
+        let currentLat = -22.6083;
+        let currentLon = -43.7084;
+        let currentMarker = null;
+
+        // City coordinates dictionary
+        const cities = {
+            'Paracambi, RJ': [-22.6083, -43.7084],
+            'São Paulo': [-23.5505, -46.6333],
+            'Porto Alegre': [-30.0346, -51.2177],
+            'Brasília': [-15.7801, -47.9292],
+            'Belo Horizonte': [-19.9191, -43.9386]
+        };
+
+        // Initialize the map
+        const map = L.map('map').setView([currentLat, currentLon], 8);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        // Add initial marker
+        currentMarker = L.marker([currentLat, currentLon]).addTo(map)
+            .bindPopup('Current location');
+
+        // Update location by clicking on the map
+        map.on('click', function(e) {
+            currentLat = e.latlng.lat.toFixed(4);
+            currentLon = e.latlng.lng.toFixed(4);
+
+            if(currentMarker) map.removeLayer(currentMarker);
+            currentMarker = L.marker([currentLat, currentLon]).addTo(map)
+                .bindPopup('New selected location')
+                .openPopup();
+
+            document.getElementById('coordinates').textContent = 
+                `Coordinates: ${currentLat}, ${currentLon}`;
+
+            document.getElementById('city-select').selectedIndex = -1;
+
+            createCharts(document.getElementById('days-select').value);
+        });
+
+        // Update map when selecting a city
+        document.getElementById('city-select').addEventListener('change', function() {
+            const city = this.options[this.selectedIndex].text;
+            currentLat = cities[city][0];
+            currentLon = cities[city][1];
+
+            map.setView([currentLat, currentLon], 8);
+
+            if(currentMarker) map.removeLayer(currentMarker);
+            currentMarker = L.marker([currentLat, currentLon]).addTo(map)
+                .bindPopup(`${city}`)
+                .openPopup();
+
+            document.getElementById('coordinates').textContent = 
+                `Coordinates: ${currentLat}, ${currentLon}`;
+
+            createCharts(document.getElementById('days-select').value);
+
+            map.off('click');
+        });
+
+        // Add overlay text on the map
+        var textControl = L.control({ position: 'topright' });
+
+        textControl.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'leaflet-text-overlay');
+            return div;
+        };
+        textControl.addTo(map);
+
+        // Function to create all charts
+        async function createCharts(days) {
+            try {
+                const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${currentLat}&longitude=${currentLon}&hourly=temperature_2m,precipitation_probability,relative_humidity_2m,precipitation,wind_speed_10m,evapotranspiration,wind_direction_10m,surface_pressure,cloud_cover_low,cloud_cover,cloud_cover_mid,cloud_cover_high&timezone=America%2FSao_Paulo&forecast_days=${days}`;
+
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const chartsContainer = document.getElementById('charts');
+                chartsContainer.innerHTML = '';
+
+                const timeFormatter = days > 1 
+                    ? t => `${t.split('T')[0].split('-').reverse().slice(0,2).join('/')} ${t.split('T')[1].substring(0,5)}`
+                    : t => t.split('T')[1].substring(0,5);
+
+                const horas = data.hourly.time.map(timeFormatter);
+                const unidades = data.hourly_units;
+
+                // Create Precipitation chart
+                const precipitationChartDiv = document.createElement('div');
+                precipitationChartDiv.className = 'chart-container';
+                precipitationChartDiv.innerHTML = `<h3 class="variable-title">PRECIPITATION (mm)</h3>
+                                        <canvas id="precipitation-chart"></canvas>`;
+                chartsContainer.appendChild(precipitationChartDiv);
+
+                new Chart(document.getElementById('precipitation-chart'), {
+                    type: 'bar',
+                    data: {
+                        labels: horas,
+                        datasets: [{
+                            label: 'Precipitation (mm)',
+                            data: data.hourly.precipitation,
+                            backgroundColor: '#3498db',
+                            borderColor: '#2980b9',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { title: { display: true, text: 'Hour' }, grid: { display: false } },
+                            y: { title: { display: true, text: 'Precipitation (mm)' }, min: 0 }
+                        }
+                    }
+                });
+
+                // Create other charts
+                const variables = [
+                    'precipitation_probability','temperature_2m',
+                    'relative_humidity_2m', 'wind_speed_10m',
+                    'surface_pressure', 'evapotranspiration'
+                ];
+
+                variables.forEach(variable => {
+                    const chartDiv = document.createElement('div');
+                    chartDiv.className = 'chart-container';
+                    chartDiv.innerHTML = `<h3 class="variable-title">${variable.replace(/_/g, ' ').toUpperCase()} (${unidades[variable]})</h3>
+                                        <canvas id="${variable}-chart"></canvas>`;
+                    chartsContainer.appendChild(chartDiv);
+
+                    new Chart(document.getElementById(`${variable}-chart`), {
+                        type: 'line',
+                        data: {
+                            labels: horas,
+                            datasets: [{
+                                data: data.hourly[variable],
+                                borderColor: '#3445db',
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { title: { display: true, text: 'Hour' }, grid: { display: false } },
+                                y: { title: { display: true, text: unidades[variable] } }
+                            }
+                        }
+                    });
+                });
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                alert('Error loading data for the selected location');
+            }
+        }
+
+        // Initialize charts with default 1-day forecast
+        createCharts(1);
+    </script>
+
+    <!-- Page footer -->
+    <footer style="text-align: right; font-size: 0.9em; color: #666; margin-top: 20px; position: fixed; bottom: 10px; right: 10px;">
+        Designed by Bentech<br>
+        Marcos Araujo 2025<br>
+        <a href="https://github.com/marcosaraujomvma" target="_blank" style="color: #3498db; text-decoration: none;">https://github.com/marcosaraujomvma</a>
+    </footer>
+
+</body>
+</html>
