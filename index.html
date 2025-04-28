@@ -132,7 +132,79 @@
             <option value="-30.0346,-51.2177">Porto Alegre</option>
             <option value="-15.7801,-47.9292">Brasília</option>
             <option value="-19.9191,-43.9386">Belo Horizonte</option>
+            <option value="-23.2500,-44.6000">Angra dos Reis</option>
+            <option value="-21.0300,-41.8250">Aperibé</option>
+            <option value="-22.9500,-42.0000">Araruama</option>
+            <option value="-22.9000,-41.9500">Armação dos Búzios</option>
+            <option value="-23.0000,-42.0500">Arraial do Cabo</option>
+            <option value="-22.6000,-43.1500">Areal</option>
+            <option value="-22.4000,-43.2000">Barra do Piraí</option>
+            <option value="-22.3000,-43.2000">Barra Mansa</option>
+            <option value="-21.1000,-42.3000">Bom Jardim</option>
+            <option value="-21.3000,-41.9000">Bom Jesus do Itabapoana</option>
+            <option value="-22.9000,-41.9500">Cabo Frio</option>
+            <option value="-21.6000,-41.9000">Cambuci</option>
+            <option value="-21.7450,-41.2670">Campos dos Goytacazes</option>
+            <option value="-21.2000,-42.1000">Cantagalo</option>
+            <option value="-22.1250,-41.7500">Carapebus</option>
+            <option value="-21.5425,-41.6275">Cardoso Moreira</option>
+            <option value="-21.4000,-42.5000">Carmo</option>
+            <option value="-22.1000,-42.5000">Cachoeiras de Macacu</option>
+            <option value="-22.1250,-43.1000">Comendador Levy Gasparian</option>
+            <option value="-21.7600,-41.6200">Conceição de Macabu</option>
+            <option value="-21.1500,-42.2000">Cordeiro</option>
+            <option value="-21.1000,-42.2000">Duas Barras</option>
+            <option value="-22.3000,-43.1000">Engenheiro Paulo de Frontin</option>
+            <option value="-22.9000,-41.9500">Iguaba Grande</option>
+            <option value="-21.3000,-41.7600">Italva</option>
+            <option value="-21.2000,-41.8800">Itaperuna</option>
+            <option value="-21.4000,-41.7000">Itaocara</option>
+            <option value="-22.5000,-44.1000">Itatiaia</option>
+            <option value="-21.4250,-42.1050">Laje do Muriaé</option>
+            <option value="-22.3750,-41.7750">Macaé</option>
+            <option value="-21.4000,-42.4000">Macuco</option>
+            <option value="-23.0750,-44.2500">Mangaratiba</option>
+            <option value="-22.4000,-43.2000">Mendes</option>
+            <option value="-22.2000,-43.2000">Miguel Pereira</option>
+            <option value="-21.0900,-42.0550">Miracema</option>
+            <option value="-21.0800,-41.9250">Natividade</option>
+            <option value="-21.5000,-42.4000">Nova Friburgo</option>
+            <option value="-23.2500,-44.8000">Paraty</option>
+            <option value="-22.2500,-43.1500">Paty do Alferes</option>
+            <option value="-22.3000,-43.2000">Pinheiral</option>
+            <option value="-22.4000,-43.2000">Piraí</option>
+            <option value="-20.9600,-41.5500">Porciúncula</option>
+            <option value="-22.4000,-44.1000">Porto Real</option>
+            <option value="-22.4000,-44.2000">Quatis</option>
+            <option value="-22.0250,-41.5200">Quissamã</option>
+            <option value="-22.4500,-44.6000">Resende</option>
+            <option value="-22.9000,-42.1000">Rio Bonito</option>
+            <option value="-22.5000,-43.3000">Rio Claro</option>
+            <option value="-22.2000,-43.2000">Rio das Flores</option>
+            <option value="-22.6000,-42.0500">Rio das Ostras</option>
+            <option value="-21.6000,-42.4000">Santa Maria Madalena</option>
+            <option value="-22.0000,-42.3000">Santo Antônio de Pádua</option>
+            <option value="-21.9000,-42.0000">São Fidélis</option>
+            <option value="-21.6000,-41.4000">São Francisco de Itabapoana</option>
+            <option value="-21.4000,-41.6000">São João da Barra</option>
+            <option value="-22.8500,-43.3000">São João de Meriti</option>
+            <option value="-21.9000,-42.4000">São José de Ubá</option>
+            <option value="-22.3000,-42.1000">São José do Vale do Rio Preto</option>
+            <option value="-22.1500,-41.9500">São Pedro da Aldeia</option>
+            <option value="-21.6000,-42.2000">São Sebastião do Alto</option>
+            <option value="-21.8000,-42.7000">Sapucaia</option>
+            <option value="-22.9000,-41.7000">Saquarema</option>
+            <option value="-22.5000,-42.5000">Silva Jardim</option>
+            <option value="-22.1000,-42.4000">Sumidouro</option>
+            <option value="-22.2000,-42.3000">Teresópolis</option>
+            <option value="-21.6000,-42.6000">Trajano de Moraes</option>
+            <option value="-22.3250,-43.1000">Valença</option>
+            <option value="-21.7000,-42.0000">Varre-Sai</option>
+            <option value="-22.1000,-43.1000">Vassouras</option>
+            <option value="-22.3000,-44.2000">Volta Redonda</option>
         </select>
+        
+
 
         <!-- Display selected coordinates -->
         <div class="coordinates" id="coordinates">
@@ -155,13 +227,92 @@
         let currentMarker = null;
 
         // City coordinates dictionary
+        //const cities = {
+        //    'Paracambi, RJ': [-22.6083, -43.7084],
+        //1    'São Paulo': [-23.5505, -46.6333],
+        //    'Porto Alegre': [-30.0346, -51.2177],
+        //    'Brasília': [-15.7801, -47.9292],
+         //   'Belo Horizonte': [-19.9191, -43.9386]
+        //};
+
         const cities = {
             'Paracambi, RJ': [-22.6083, -43.7084],
             'São Paulo': [-23.5505, -46.6333],
             'Porto Alegre': [-30.0346, -51.2177],
             'Brasília': [-15.7801, -47.9292],
-            'Belo Horizonte': [-19.9191, -43.9386]
+            'Belo Horizonte': [-19.9191, -43.9386],
+            'Angra dos Reis': [-23.25, -44.6],
+            'Aperibé': [-21.03, -41.825],
+            'Araruama': [-22.95, -42.0],
+            'Armação dos Búzios': [-22.9, -42.05],
+            'Arraial do Cabo': [-23.0, -42.05],
+            'Areal': [-22.6, -43.15],
+            'Barra do Piraí': [-22.4, -43.2],
+            'Barra Mansa': [-22.3, -43.2],
+            'Bom Jardim': [-21.1, -42.3],
+            'Bom Jesus do Itabapoana': [-21.3, -41.9],
+            'Cabo Frio': [-22.925, -41.95],
+            'Cambuci': [-21.6, -41.9],
+            'Campos dos Goytacazes': [-21.745, -41.267],
+            'Cantagalo': [-21.2, -42.1],
+            'Carapebus': [-22.125, -41.75],
+            'Cardoso Moreira': [-21.5425, -41.6275],
+            'Carmo': [-21.4, -42.5],
+            'Cachoeiras de Macacu': [-22.1, -42.5],
+            'Comendador Levy Gasparian': [-22.125, -43.1],
+            'Conceição de Macabu': [-21.76, -41.62],
+            'Cordeiro': [-21.15, -42.2],
+            'Duas Barras': [-21.1, -42.2],
+            'Engenheiro Paulo de Frontin': [-22.3, -43.1],
+            'Iguaba Grande': [-22.9, -41.95],
+            'Italva': [-21.3, -41.76],
+            'Itaperuna': [-21.2, -41.88],
+            'Itaocara': [-21.4, -41.7],
+            'Itatiaia': [-22.5, -44.1],
+            'Laje do Muriaé': [-21.425, -42.105],
+            'Macaé': [-22.375, -41.775],
+            'Macuco': [-21.4, -42.4],
+            'Mangaratiba': [-23.075, -44.25],
+            'Mendes': [-22.4, -43.2],
+            'Miguel Pereira': [-22.2, -43.2],
+            'Miracema': [-21.09, -42.055],
+            'Natividade': [-21.08, -41.925],
+            'Nova Friburgo': [-21.5, -42.4],
+            'Paraty': [-23.25, -44.8],
+            'Paty do Alferes': [-22.25, -43.15],
+            'Pinheiral': [-22.3, -43.2],
+            'Piraí': [-22.4, -43.2],
+            'Porciúncula': [-20.96, -41.55],
+            'Porto Real': [-22.4, -44.1],
+            'Quatis': [-22.4, -44.2],
+            'Quissamã': [-22.025, -41.52],
+            'Resende': [-22.45, -44.6],
+            'Rio Bonito': [-22.9, -42.1],
+            'Rio Claro': [-22.5, -43.3],
+            'Rio das Flores': [-22.2, -43.2],
+            'Rio das Ostras': [-22.6, -42.05],
+            'Santa Maria Madalena': [-21.6, -42.4],
+            'Santo Antônio de Pádua': [-22.0, -42.3],
+            'São Fidélis': [-21.9, -42.0],
+            'São Francisco de Itabapoana': [-21.6, -41.4],
+            'São João da Barra': [-21.4, -41.6],
+            'São João de Meriti': [-22.85, -43.3],
+            'São José de Ubá': [-21.9, -42.4],
+            'São José do Vale do Rio Preto': [-22.3, -42.1],
+            'São Pedro da Aldeia': [-22.15, -41.95],
+            'São Sebastião do Alto': [-21.6, -42.2],
+            'Sapucaia': [-21.8, -42.7],
+            'Saquarema': [-22.9, -41.7],
+            'Silva Jardim': [-22.5, -42.5],
+            'Sumidouro': [-22.1, -42.4],
+            'Teresópolis': [-22.2, -42.3],
+            'Trajano de Moraes': [-21.6, -42.6],
+            'Valença': [-22.325, -43.1],
+            'Varre-Sai': [-21.7, -42.0],
+            'Vassouras': [-22.1, -43.1],
+            'Volta Redonda': [-22.3, -44.2]
         };
+
 
         // Initialize the map
         const map = L.map('map').setView([currentLat, currentLon], 8);
