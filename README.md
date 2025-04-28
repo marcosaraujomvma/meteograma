@@ -34,4 +34,5 @@ A weather visualization web project using **Leaflet.js** (for maps) and **Chart.
 
 Designed and developed by Marcos Araújo
 Design by Bentech
+marcosaraujo.mvma@gmail.com
 2025
