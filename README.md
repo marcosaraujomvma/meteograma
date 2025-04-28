@@ -1,4 +1,4 @@
-# 🌎 Klimato Interactive Meteogram
+# 🌎 Interactive Meteogram
 
 A weather visualization web project using **Leaflet.js** (for maps) and **Chart.js** (for charts).
 
